@@ -5,6 +5,6 @@ type: software
 authors:
   - family-names: "Saputra"
     given-names: "Devis Wawan"
-repository-code: "https://github.com/devissaputra/constructive-alignment-auditor"
+repository-code: "https://github.com/devissaputra/constructive_alignment_auditor"
 license: MIT
 version: 0.1.0
