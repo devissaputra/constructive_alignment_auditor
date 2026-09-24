@@ -1,77 +1,119 @@
 # Constructive Alignment Auditor
 
-> Rule based baseline for checking cognitive level and lexical overlap across outcomes, activities, and assessments.
+> Transparent rule-based signals for reviewing cognitive demand and lexical relationships across outcomes, learning activities, and assessments.
 
-[![CI](https://github.com/devissaputra/constructive-alignment-auditor/actions/workflows/ci.yml/badge.svg)](https://github.com/devissaputra/constructive-alignment-auditor/actions/workflows/ci.yml)
+[![CI](https://github.com/devissaputra/constructive_alignment_auditor/actions/workflows/ci.yml/badge.svg)](https://github.com/devissaputra/constructive_alignment_auditor/actions/workflows/ci.yml)
 
 ![Constructive Alignment Auditor workflow](assets/architecture.svg)
 
-**Area:** Instructional Design & Curriculum Intelligence    
+**Area:** AI in Education (AIEd) · Instructional Design & Curriculum Intelligence  
 **Status:** working research prototype  
 **Author:** Devis Wawan Saputra
 
 ## What this project is for
 
-A course can have strong objectives, useful activities, and fair assessments yet still be poorly aligned. This tool compares the cognitive demand and language of those three pieces so a designer can spot mismatches early and review them with context.
+A curriculum can contain individually reasonable outcomes, activities, and assessments while still leaving important relationships unclear. This repository provides a transparent baseline that helps curriculum reviewers inspect those relationships without turning them into one opaque score.
 
-**Who may find it useful:** Instructional designers, curriculum teams, and education researchers studying constructive alignment.
+**Who may find it useful:** instructional designers, curriculum teams, learning designers, and education researchers studying constructive alignment.
 
 ## Research questions
 
-1. Where do outcome verbs, learning activities, and assessment demands diverge?
-2. Can transparent text features support expert review without replacing instructional judgment?
-3. Which alignment gaps should be prioritized for redesign?
+1. Where do the cognitive demands of outcomes, activities, and assessments differ?
+2. Can transparent rule-based signals help experts notice cases worth closer inspection?
+3. Where do automated review flags agree or disagree with curriculum reviewers?
 
 ## How it works
 
-The current auditor uses explicit Bloom action verbs and word set overlap. It reports the inferred cognitive level for an outcome, activity, and assessment, then adds two lexical overlap scores. The result is a review prompt, not an accreditation decision.
+The auditor keeps three curriculum elements separate:
+
+- intended learning outcome
+- teaching or learning activity
+- assessment task
+
+For each element, it detects explicit Bloom-style action verbs and reports the highest detected cognitive-process level. It then compares activity and assessment levels with the outcome, calculates lexical overlap, and generates transparent review flags.
 
 ![Constructive Alignment Auditor data and reasoning flow](assets/data_flow.svg)
 
-The pipeline keeps the three design elements separate until the final audit. That is useful because a cognitive mismatch and a vocabulary mismatch are different problems and should not be collapsed into one opaque score.
+The tool does **not** automatically declare a course aligned or misaligned. A difference such as `assessment_above_outcome` is a prompt for expert review because the difference may be intentional and pedagogically appropriate.
 
 ![Synthetic demo snapshot for Constructive Alignment Auditor](assets/demo_snapshot.svg)
 
-This snapshot shows the bundled synthetic example for Constructive Alignment Auditor. It checks the software path; it is not an empirical performance result.
+The bundled example is synthetic. It demonstrates the software path and should not be interpreted as an empirical finding.
 
-## Methods in the current baseline
+## Current baseline methods
 
-- Bloom verb classification
-- Jaccard token overlap
-- outcome activity comparison
-- outcome assessment comparison
-- human review summary
+- expanded Bloom-style action-verb lexicon
+- lightweight matching for common verb inflections
+- highest detected cognitive-process level
+- explicit activity and assessment level gaps
+- relation labels: `same_level`, `below_outcome`, `above_outcome`, `unknown`
+- stopword-filtered Jaccard content-word overlap
+- transparent review flags
+- plain-language review summary
+
+The baseline intentionally avoids a single overall "alignment score."
+
+## Example
+
+The bundled example compares:
+
+- **Outcome:** Analyze system tradeoffs
+- **Activity:** Compare system architectures and tradeoffs
+- **Assessment:** Justify the selected system architecture
+
+The rule baseline detects:
+
+- outcome: `analyze`
+- activity: `analyze`
+- assessment: `evaluate`
+- activity gap: `0`
+- assessment gap: `+1`
+- review flag: `assessment_above_outcome`
+
+That flag means **review the difference**, not "the assessment is wrong."
 
 ## Data
 
-Synthetic learning outcomes, activities, assessments, and rubrics are included.
+`data/sample.csv` contains only a synthetic curriculum example. It contains no learner records.
 
-`data/README.md` documents the sample schema and the conditions that should be recorded before any real dataset is connected. Restricted or identifiable learner data should stay outside the repository.
+`data/README.md` documents the current schema and a more rigorous structure for future expert-labelled evaluation data.
 
 ## Run the demo
 
 ```bash
-git clone https://github.com/devissaputra/constructive-alignment-auditor.git
-cd constructive-alignment-auditor
+git clone https://github.com/devissaputra/constructive_alignment_auditor.git
+cd constructive_alignment_auditor
 python scripts/run_demo.py
 python -m unittest discover -s tests -v
 ```
 
-The included example compares an analysis level outcome with an analysis activity and an evaluation level assessment. The output exposes every inferred level and overlap value.
+## Core API
 
-## What to evaluate next
+`bloom_evidence(text)` exposes the actual detected action verbs by level.
 
-I would next build a labeled set of curriculum examples reviewed by instructional design experts. The baseline can then be compared with a semantic model and evaluated on disagreement cases rather than only average agreement.
+`bloom_level(text)` returns the highest detected Bloom-style level or `unknown`.
+
+`token_overlap(left, right)` computes Jaccard overlap over lightly normalized content words after stopword removal.
+
+`compare_levels(outcome_level, other_level)` reports an ordinal gap and a transparent relation label.
+
+`audit(outcome, activity, assessment)` returns the complete review record: detected levels, evidence verbs, level gaps, relation labels, overlap values, review flags, and review summary.
 
 ## Evaluation view
 
 ![Constructive Alignment Auditor evaluation dashboard](assets/evaluation_dashboard.svg)
 
-The Constructive Alignment Auditor dashboard is an evaluation checklist rather than a result chart. The bars are illustrative only; the labels show the evidence a real study would need to collect.
+The dashboard shows the evidence categories a real validation study should inspect. The bars are illustrative only and do not report measured performance.
 
 ## Limits and responsible use
 
-Bloom verbs and token overlap are crude proxies for constructive alignment. Context, task complexity, rubric quality, and disciplinary conventions still require expert judgment. See `docs/ethics_and_risks.md` for the broader risk review.
+Bloom-style action verbs are heuristics. They do not fully represent task complexity, disciplinary practice, authenticity, rubric quality, scaffolding, or what students actually do.
+
+Lexical overlap measures wording similarity, not conceptual equivalence.
+
+The system is therefore a **review aid**, not an accreditation, programme-quality, compliance, or instructor-performance judge.
+
+See `docs/ethics_and_risks.md` for the broader risk review.
 
 ## Repository map
 
@@ -94,6 +136,7 @@ Bloom verbs and token overlap are crude proxies for constructive alignment. Cont
 ├── scripts/run_demo.py
 ├── src/constructive_alignment_auditor/core.py
 ├── tests/test_core.py
+├── .gitignore
 ├── CITATION.cff
 ├── LICENSE
 ├── pyproject.toml
@@ -104,14 +147,17 @@ Bloom verbs and token overlap are crude proxies for constructive alignment. Cont
 
 A credible next version would:
 
-1. create an expert labeled alignment dataset
-2. compare lexical overlap with a semantic baseline
-3. study disagreements between the tool and curriculum reviewers
+1. build an expert-labelled dataset spanning several disciplines
+2. measure reviewer agreement before using expert labels as a reference
+3. quantify rule-baseline error patterns and unknown-verb rates
+4. compare the transparent lexical baseline with semantic text representations
+5. study disagreement cases rather than reporting only an average accuracy score
+6. test whether the tool improves the quality or efficiency of human curriculum review
 
 ## Related work
 
-`docs/related_work.md` points to open projects that are relevant to this problem area. They are context for comparison and study design; this repository does not present their code as its own.
+`docs/related_work.md` explains the constructive-alignment and Bloom-taxonomy context used by this baseline. The repository does not claim that its verb rules constitute a validated constructive-alignment instrument.
 
 ## Citation and license
 
-`CITATION.cff` contains the software citation. The code and original SVG visuals use the MIT License. Any external dataset keeps its own license and usage conditions.
+`CITATION.cff` contains the software citation. Code and original SVG visuals use the MIT License. External datasets and curriculum documents retain their own licenses and usage conditions.
