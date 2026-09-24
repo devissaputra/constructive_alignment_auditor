@@ -23,7 +23,9 @@ class CoreTests(unittest.TestCase):
         self.assertEqual(core.bloom_evidence("Read chapter three"), {})
 
     def test_bloom_evidence_is_transparent(self):
-        evidence = core.bloom_evidence("Compare options and justify a recommendation")
+        evidence = core.bloom_evidence(
+            "Compare options, justify a choice, and recommend an action"
+        )
         self.assertEqual(evidence["analyze"], ["compare"])
         self.assertEqual(evidence["evaluate"], ["justify", "recommend"])
 
