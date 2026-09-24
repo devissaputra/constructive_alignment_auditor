@@ -1,2 +1,2 @@
-outcome,activity,assessment
-Analyze system tradeoffs,Compare two architectures,Justify the selected architecture
+course_id,module_id,outcome,activity,assessment
+DEMO101,M01,Analyze system tradeoffs,Compare system architectures and tradeoffs,Justify the selected system architecture
