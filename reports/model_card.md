@@ -6,28 +6,48 @@ Constructive Alignment Auditor
 
 ## Purpose
 
-Rule based baseline for checking cognitive level and lexical overlap across outcomes, activities, and assessments.
+Transparent decision-support for reviewing relationships among intended learning outcomes, learning activities, and assessment tasks.
 
 ## Current maturity
 
-Working research prototype. The bundled example checks the software path with synthetic inputs. It does not establish validity for real learners, instructors, courses, or workplaces.
+Working research prototype. The bundled example is synthetic and checks the software path only. It does not establish validity for accreditation, programme approval, instructor evaluation, or other consequential decisions.
 
 ## Inputs
 
-See `../data/README.md` for the current synthetic schema and the documentation expected before real data are connected.
+The current baseline accepts three text fields:
+
+- intended learning outcome
+- learning activity
+- assessment task
+
+See `../data/README.md` for the synthetic schema and recommended fields for future expert-labelled studies.
 
 ## Outputs
 
-The current code produces Bloom level labels and two transparent lexical overlap scores. These outputs are research signals and should be interpreted with the educational context that produced them.
+The code reports:
+
+- highest detected Bloom-style level for each curriculum element
+- matched action verbs by level
+- activity and assessment level gaps relative to the outcome
+- relation labels: `same_level`, `below_outcome`, `above_outcome`, or `unknown`
+- stopword-filtered lexical overlap
+- transparent review flags
+- a plain-language review summary
+
+## Interpretation
+
+A review flag is not a verdict. A higher or lower detected level can be pedagogically appropriate, and verb-based taxonomies cannot capture task complexity on their own.
+
+The tool deliberately avoids a single overall alignment score.
 
 ## Evidence needed before real use
 
-Use multiple expert reviewers to label alignment examples, calculate agreement, and compare the rule baseline with a stronger semantic method. Analyze false alarms and missed mismatches separately.
+Evaluate against curriculum examples reviewed by multiple experts. Report inter-rater agreement, disagreement cases, unknown-verb rates, and error patterns. Compare the rule baseline with at least one semantic method before making claims about practical utility.
 
-## Main limitation
+## Main limitations
 
-Bloom verbs and token overlap are crude proxies for constructive alignment. Context, task complexity, rubric quality, and disciplinary conventions still require expert judgment.
+The Bloom lexicon is incomplete and context-insensitive. Morphological normalization is lightweight. Jaccard overlap measures lexical similarity rather than conceptual alignment. Rubric quality, disciplinary conventions, scaffolding, authenticity, and assessment conditions are outside the current model.
 
 ## Human oversight
 
-A person must review any output before it can affect a learner, instructor, applicant, or employee.
+A qualified curriculum or instructional-design reviewer should interpret every flag in context. The prototype must not be used as an automatic accreditation, compliance, instructor-performance, or programme-quality judge.
