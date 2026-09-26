@@ -1,14 +1,29 @@
 # Constructive Alignment Auditor
 
+This auditor compares learning objectives, activities, and assessments using an explicit Bloom-verb lexicon and content-token overlap. It reports the evidence behind each inferred level and flags uncertain or mismatched components for review. Its strength is inspectability: the lexical rules are easy to challenge, and the output is framed as a prompt for instructional-design judgment rather than a validated alignment score.
+
+## Start here
+
+- [Calculations, evidence and verification scope](CALCULATIONS.md)
+- [Figure sources and exact numerical paths](docs/figure_spec.json)
+- [Data status](data/README.md)
+
+![Study question, data, design and interpretation](assets/review_overview.svg)
+
+![Defined calculation and source-linked evidence](assets/review_calculations.svg)
+
+**Review scope:** 15 existing unittest checks passed. The bundled demonstration executed successfully in this review.
+
+## Detailed project documentation
+
 > Transparent rule-based signals for reviewing cognitive demand and lexical relationships across outcomes, learning activities, and assessments.
 
 [![CI](https://github.com/devissaputra/constructive_alignment_auditor/actions/workflows/ci.yml/badge.svg)](https://github.com/devissaputra/constructive_alignment_auditor/actions/workflows/ci.yml)
 
-![Constructive Alignment Auditor workflow](assets/architecture.svg)
 
 **Area:** AI in Education (AIEd) · Instructional Design & Curriculum Intelligence  
 **Status:** working research prototype  
-**Author:** Devis Wawan Saputra
+**Author:** Devis Saputra
 
 ## What this project is for
 
@@ -32,11 +47,9 @@ The auditor keeps three curriculum elements separate:
 
 For each element, it detects explicit Bloom-style action verbs and reports the highest detected cognitive-process level. It then compares activity and assessment levels with the outcome, calculates lexical overlap, and generates transparent review flags.
 
-![Constructive Alignment Auditor data and reasoning flow](assets/data_flow.svg)
 
 The tool does **not** automatically declare a course aligned or misaligned. A difference such as `assessment_above_outcome` is a prompt for expert review because the difference may be intentional and pedagogically appropriate.
 
-![Synthetic demo snapshot for Constructive Alignment Auditor](assets/demo_snapshot.svg)
 
 The bundled example is synthetic. It demonstrates the software path and should not be interpreted as an empirical finding.
 
@@ -101,7 +114,6 @@ python -m unittest discover -s tests -v
 
 ## Evaluation view
 
-![Constructive Alignment Auditor evaluation dashboard](assets/evaluation_dashboard.svg)
 
 The dashboard shows the evidence categories a real validation study should inspect. The bars are illustrative only and do not report measured performance.
 

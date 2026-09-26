@@ -1,0 +1,7 @@
+{
+  "kind": "illustrative_calculation",
+  "note": "Illustrative overlap arithmetic, not semantic validation.",
+  "outputs": {
+    "token Jaccard: 2 shared / 4 union": 0.5
+  }
+}

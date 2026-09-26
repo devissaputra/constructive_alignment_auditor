@@ -1,0 +1,22 @@
+{
+  "question": "Where might objectives, activities and assessments be misaligned?",
+  "data": "Supplied instructional statements and a transparent Bloom-verb lexicon.",
+  "method": "Extract candidate verbs and content overlap; compare cognitive levels; expose unknowns and review flags.",
+  "formula": "Content overlap = shared content tokens / union of content tokens.",
+  "interpretation": "Lexical overlap is not semantic alignment. A Bloom verb can mean different things in context, and unknown levels should prompt review. The tool supports expert judgment rather than certifying curriculum quality.",
+  "status": "SYNTHETIC / RULE-BASED PROTOTYPE | no educational validity claim",
+  "source": "results/review_examples.json",
+  "rows": [
+    {
+      "label": "token Jaccard: 2 shared / 4 union",
+      "path": [
+        "outputs",
+        "token Jaccard: 2 shared / 4 union"
+      ],
+      "unit": "unitless"
+    }
+  ],
+  "table_title": "Worked example — illustrative, not a measured research result",
+  "evidence_note": "Illustrative inputs and calculations are in scripts/review_examples.py.",
+  "finding": "This auditor compares learning objectives, activities, and assessments using an explicit Bloom-verb lexicon and content-token overlap. It reports the evidence behind each inferred level and flags uncertain or mismatched components for review. Its strength is inspectability: the lexical rules are easy to challenge, and the output is framed as a prompt for instructional-design judgment rather than a validated alignment score."
+}

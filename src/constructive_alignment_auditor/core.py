@@ -1,3 +1,7 @@
+# Calculation reading guide: ../CALCULATIONS.md (repository root).
+# Content overlap = shared content tokens / union of content tokens.
+# Lexical overlap is not semantic alignment. A Bloom verb can mean different things in context, and unknown levels should prompt review. The tool supports expert judgment rather than certifying curriculum quality.
+
 import re
 
 BLOOM = {
